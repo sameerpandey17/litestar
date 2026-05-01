@@ -3,12 +3,14 @@ import warnings
 import pytest
 
 
-def test_import_from_contrib_raises_deprecation_warning():
+def test_import_from_contrib_raises_deprecation_warning() -> None:
+    """Test that importing from the deprecated module emits a warning."""
     with pytest.warns(DeprecationWarning, match="litestar.plugins.jinja"):
         from litestar.contrib.jinja import JinjaTemplateEngine
 
 
-def test_bare_import_emits_no_warning():
+def test_bare_import_emits_no_warning() -> None:
+    """Test that importing the module itself does not emit a warning."""
     # Importing the module itself should NOT warn
     # Only accessing attributes should trigger the warning
     with warnings.catch_warnings():
@@ -16,7 +18,8 @@ def test_bare_import_emits_no_warning():
         import litestar.contrib.jinja  # noqa: F401
 
 
-def test_identity_equality():
+def test_identity_equality() -> None:
+    """Test that symbols imported from contrib are identical to plugins."""
     # The same object must be returned from both paths
     import warnings
     with warnings.catch_warnings():

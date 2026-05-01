@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import warnings
 from typing import TYPE_CHECKING
 
 from litestar.utils.deprecation import warn_deprecation
@@ -17,11 +16,22 @@ __deprecated__ = {
     "T",
 }
 
-for name in __deprecated__:
-    if name in globals():
-        del globals()[name]
+for _name in __deprecated__:
+    if _name in globals():
+        del globals()[_name]
 
 def __getattr__(name: str) -> Any:
+    """Provide a deprecation warning when accessing the deprecated module.
+
+    Args:
+        name: The attribute name to access.
+
+    Returns:
+        The corresponding attribute from the new module location.
+
+    Raises:
+        AttributeError: If the attribute does not exist in the module.
+    """
     if name in __deprecated__:
         warn_deprecation(
             version="3.0.0b0",
